@@ -12,11 +12,11 @@
     "usabilitydynamics/ud-lib-utility": "*"
   },  
   "files": [
-    "files/lib/settings.php",
     "files/settings-schema.json"
   ],
   "scripts": [
-    "scripts/settings.js"
+    "scripts/settings.js",
+    "scripts/settings.php"
   ],
   "authors": [
     {
