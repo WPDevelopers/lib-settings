@@ -1,12 +1,12 @@
 {
-  "name": "{{name}}",
+  "name": "ud-lib-settings",
   "version": "0.0.1",
-  "description": "{{description}}",
-  "homepage": "http://github.com/UsabilityDynamics/{{name}}",
+  "description": "ud-lib-settings",
+  "homepage": "http://github.com/UsabilityDynamics/ud-lib-settings",
   "private": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/UsabilityDynamics/{{name}}"
+    "url": "https://github.com/UsabilityDynamics/ud-lib-settings"
   },
   "dependencies": {
     "usabilitydynamics/ud-lib-utility": "*"
@@ -18,7 +18,7 @@
     "files/settings-schema.json"
   ],
   "scripts": [
-    "scripts/index.js"
+    "scripts/settings.js"
   ],
   "authors": [
     {
