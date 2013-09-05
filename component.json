@@ -11,10 +11,8 @@
   "dependencies": {
     "usabilitydynamics/ud-lib-utility": "*"
   },  
-  "lib": [
-    "lib/settings.php"
-  ],
   "files": [
+    "files/lib/settings.php",
     "files/settings-schema.json"
   ],
   "scripts": [
