@@ -10,7 +10,12 @@
   },
   "dependencies": {
     "usabilitydynamics/lib-utility": "*"
-  },  
+  },
+  "views": [
+    "views/new-installation.xhtml",
+    "views/setup-assistant.xhtml",
+    "views/upgrade-splash.xhtml"
+  ],
   "schemas": [
     "schemas/settings.json"
   ],
