@@ -11,8 +11,8 @@
   "dependencies": {
     "usabilitydynamics/lib-utility": "*"
   },  
-  "files": [
-    "files/schema/settings.json"
+  "schemas": [
+    "schemas/settings.json"
   ],
   "libs": [
     "libs/settings.php"
