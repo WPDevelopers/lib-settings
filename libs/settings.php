@@ -5,6 +5,10 @@
    */
   namespace UsabilityDynamics {
 
+    if( class_exists( '\UsabilityDynamics\Settings' ) ) {
+      return;
+    }
+
     class Settings extends Utility {
 
       /**
