@@ -1,14 +1,18 @@
 <?php
-  /**
-   * Settings Library
-   *
-   */
-  namespace UsabilityDynamics {
+/**
+ * Settings Library
+ *
+ * @namespace UsabilityDynamics
+ */
+namespace UsabilityDynamics {
 
-    if( class_exists( '\UsabilityDynamics\Settings' ) ) {
-      return;
-    }
+  if( !class_exists( 'UsabilityDynamics\Settings' ) ) {
 
+    /**
+     * Class Settings
+     *
+     * @package UsabilityDynamics
+     */
     class Settings extends Utility {
 
       /**
@@ -24,3 +28,5 @@
     }
 
   }
+
+}
