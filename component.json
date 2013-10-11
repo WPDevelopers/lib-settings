@@ -19,8 +19,8 @@
   "schemas": [
     "schemas/settings.json"
   ],
-  "libs": [
-    "libs/settings.php"
+  "lib": [
+    "lib/settings.php"
   ],
   "scripts": [
     "scripts/settings.js"

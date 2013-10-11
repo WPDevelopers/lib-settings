@@ -13,8 +13,7 @@
     }
   ],
   "autoload": {
-    "UsabilityDynamics": "libs/",
-    "files": [ "libs/settings.php" ]
+    "files": [ "lib/settings.php" ]
   },
   "homepage": "http://github.com/usabilitydynamics/lib-settings",
   "authors": [
