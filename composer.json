@@ -1,6 +1,6 @@
 {
   "name": "usabilitydynamics/lib-settings",
-  "keywords": [ "api" ],
+  "keywords": [ "settings" ],
   "type": "library",
   "require": {
     "usabilitydynamics/lib-utility": "*"

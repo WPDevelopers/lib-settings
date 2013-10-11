@@ -1,14 +1,15 @@
 /**
  * UD Settings
  *
- * @version 0.1.2
+ * @version 0.1.3
  * @returns {Object}
  */
-module.exports = function Settings() {
+define( 'settings', [ "utility" ], function Settings() {
   console.log( 'ud.settings' );
 
   return {
-    schema: {}
+    type: 'library',
+    library: 'settings'
   }
 
-}
+});
