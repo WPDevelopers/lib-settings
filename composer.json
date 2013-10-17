@@ -41,7 +41,7 @@
       "scripts": [
         "scripts/settings.js"
       ],
-      "templates": []
+      "templates": [
         "views/new-installation.xhtml"
       ],
       "files": [
