@@ -1,5 +1,27 @@
 ## Usage
 
+```php
+class MyClass {
+
+  /**
+   * My Class Init
+   *
+   */
+  public function __construct() {
+  
+    // Declare Settings instance of My Class
+    $this->settins = new \UsabilityDynamics\Settings( 'my-cass', array(
+      options: {},
+      exportable: true
+    );
+    
+    // etc..
+  
+  }
+
+}
+
+```
 
 ## License
 
