@@ -13,7 +13,7 @@ namespace UsabilityDynamics {
      *
      * @package UsabilityDynamics
      */
-    class Settings extends Utility {
+    class Settings {
 
       /**
        * Settings Class version.
@@ -23,7 +23,36 @@ namespace UsabilityDynamics {
        * @property $version
        * @type {Object}
        */
-      public static $version = '0.1.3';
+      public $version = '0.1.3';
+      
+      private $data = array();
+      
+      /**
+       * Constructor
+       * 
+       * @param array $data Settings
+       * @author peshkov@UD
+       */
+      public function __construct( $key, $defaults = array() ) {
+        
+        $this->data = (array)$defaults;
+        
+      }
+      
+      /**
+       * 
+       * 
+       * @param type $key
+       * @return type
+       * @author peshkov@UD
+       */
+      public function get( $key ) {
+        return !empty( $this->data[ $key ] ) ? $this->data[ $key ] : false;
+      }
+      
+      public function set( $key ) {
+        
+      }
 
     }
 
