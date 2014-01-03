@@ -33,9 +33,16 @@ namespace UsabilityDynamics {
       private $prefix = '';
 
       /**
+       * Whether or not to hash option keys before saving
+       *
+       * @var bool
+       */
+      private $hash_keys = false;
+
+      /**
        * Defaults storage
        *
-       * @var type
+       * @var array
        */
       private $defaults = array();
 
@@ -49,13 +56,16 @@ namespace UsabilityDynamics {
       /**
        * Constructor
        *
-       * @param array $data Settings
-       * @author peshkov@UD
+       * @param type $defaults
+       * @param type $prefix
+       * @param type $hash_keys
+       * @param type $force_save
        */
-      public function __construct( $defaults, $prefix = '', $force_save = false ) {
+      public function __construct( $defaults, $force_save = false, $prefix = '', $hash_keys = false ) {
 
-        $this->defaults = $defaults;
-        $this->prefix   = $prefix;
+        $this->defaults  = $defaults;
+        $this->prefix    = $prefix;
+        $this->hash_keys = $hash_keys;
 
         $this->_load();
 
@@ -64,7 +74,9 @@ namespace UsabilityDynamics {
       }
 
       /**
+       * Load options from DB
        *
+       * @return \UsabilityDynamics\Settings
        */
       private function _load() {
 
@@ -77,11 +89,18 @@ namespace UsabilityDynamics {
       }
 
       /**
+       * Option key wrapper
        *
        * @param type $key
        * @return type
        */
-      private function _option_key( $key ) { return $this->prefix.'_'.$key; }
+      private function _option_key( $key ) {
+
+        if ( !$this->hash_keys ) return $this->prefix.'_'.$key;
+
+        return md5( $this->prefix.'_'.$key );
+
+      }
 
       /**
        * Getter for options
@@ -108,6 +127,27 @@ namespace UsabilityDynamics {
         $this->data[ $key ] = $value;
 
         if ( $force_save ) return $this->save();
+
+        return $this;
+
+      }
+
+      /**
+       * Set option by assoc array
+       *
+       * @param array $assoc_array_values
+       * @param bool $force_save
+       * @return \UsabilityDynamics\Settings
+       */
+      public function set_array( $assoc_array_values, $force_save = false ) {
+
+        if ( !empty( $assoc_array_values ) && is_array( $assoc_array_values ) ) {
+          foreach( $assoc_array_values as $option_key => $option_value ) {
+            $this->set( $option_key, $option_value );
+          }
+
+          if ( $force_save ) return $this->save();
+        }
 
         return $this;
 
