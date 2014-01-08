@@ -388,7 +388,7 @@ namespace UsabilityDynamics {
 
         }
 
-        return $this->_deta;
+        return $this->_data;
 
       }
 
