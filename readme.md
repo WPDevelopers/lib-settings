@@ -1,11 +1,11 @@
 ## Usage
 
 ```php
-  // Declare Settings Instance
-  $this->settings = new \UsabilityDynamics\Settings(array(
-    "options" => {},
-    "exportable" => true
-  ));
+// Declare Settings Instance
+$this->settings = new \UsabilityDynamics\Settings(array(
+  "options" => {},
+  "exportable" => true
+));
 ```
 
 ## License
