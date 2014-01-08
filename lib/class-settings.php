@@ -131,7 +131,7 @@ namespace UsabilityDynamics {
        */
       public function __construct( $args = false) {
 
-        $args = (object) wp_parse_args( $args, array(
+        $args = Utility::parse_args( $args, array(
           "namespace" => "",
           "key" => "",
           "debug" => false,
@@ -250,6 +250,45 @@ namespace UsabilityDynamics {
         }
 
         return $this;
+
+      }
+
+      /**
+       * Handle File Transfer for downloading
+       *
+       * @param array $args
+       *
+       * @return bool
+       */
+      public function file_transfer( $args = array() ) {
+
+        $args = Utility::parse_args( $args, array(
+          "name" => "settings",
+          "format" => "json",
+          "cache" => 'public',
+          "filename" => null,
+          "charset" => 'utf8'
+        ));
+
+        $args->filename = $args->filename ? $args->filename : $args->name  . '-' . date( 'Y-m-d' ) . '.' . $args->format;
+
+        // Ensure headers have not been sent.
+        if( headers_sent() ){
+          return false;
+        }
+
+        // Send headers.
+        header( "Cache-Control: {$args->cache}" );
+        header( "Content-Disposition: attachment; filename={$args->filename}" );
+        header( "Content-Type: text/plain; charset={$args->charset}" );
+        header( "Content-Description: File Transfer" );
+        header( "Content-Transfer-Encoding: binary" );
+
+        // Prepare in needed format.
+        $_data = $this->_output( $this->get(), $args->format );
+
+        // Write data.
+        die( $_data );
 
       }
 
@@ -395,19 +434,23 @@ namespace UsabilityDynamics {
       /**
        * Prepare Data for Output
        *
-       * @param $data
+       * @param      $data
+       *
+       * @param bool $format
        *
        * @return array|mixed|string|void
        */
-      private function _output( $data ) {
+      private function _output( $data, $format = false ) {
+
+        $format = $format ? $format : $this->_format;
 
         // Stringify.
-        if( $this->_format === 'json' ) {
+        if( $format === 'json' ) {
           return json_encode( $data );
         }
 
         // Deeep Object.
-        if( $this->_format === 'object' ) {
+        if( $format === 'object' ) {
           return json_decode( json_encode( $data ) );
         }
 
