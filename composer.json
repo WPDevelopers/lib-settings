@@ -8,12 +8,12 @@
   "minimum-stability": "dev",
   "repositories": [
     {
-      "type": "vcs",
-      "url": "https://github.com/UsabilityDynamics/lib-utility"
+      "type": "composer",
+      "url": "http://repository.usabilitydynamics.com"
     }
   ],
   "autoload": {
-    "classmap": [ "lib/settings.php" ]
+    "classmap": [ "lib" ]
   },
   "homepage": "http://github.com/usabilitydynamics/lib-settings",
   "authors": [
@@ -48,9 +48,6 @@
         "schemas/settings.json"
       ]
     }
-  },
-  "support": {
-    "issues": "https://github.com/usabilitydynamics/lib-settings/issues"
   },
   "license": "MIT"
 }
