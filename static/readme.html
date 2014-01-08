@@ -117,7 +117,8 @@
 $settings  = new Settings(array(
   &quot;store&quot; =&gt; &quot;options&quot;,
   &quot;key&quot; =&gt; &quot;settings_test&quot;,
-  &quot;format&quot; =&gt; &quot;object&quot;
+  &quot;format&quot; =&gt; &quot;object&quot;,
+  &quot;auto_commit&quot; =&gt; true
 ));
 
 $settings-&gt;set( &#39;make&#39;, &#39;Chevy&#39; );
@@ -136,6 +137,36 @@ $settings-&gt;set( &#39;options&#39;, array(
   &quot;towing&quot; =&gt; true,
   &quot;onstar&quot; =&gt; &#39;active&#39;
 ));</code></pre>
+<pre><code class="lang-php">// Initialize Settings.
+$this-&gt;_settings = new Settings(array(
+  &quot;store&quot; =&gt; &quot;options&quot;,
+  &quot;key&quot; =&gt; &quot;ud:veneer&quot;,
+));
+
+// ElasticSearch Service Settings.
+$this-&gt;set( &#39;documents&#39;, array(
+  &quot;host&quot; =&gt; &quot;localhost&quot;,
+  &quot;active&quot; =&gt; true,
+  &quot;token&quot; =&gt; &quot;alsdkjflaksdjsadsdff&quot;,
+  &quot;port&quot; =&gt; 9200
+));
+
+// Varnish Service Settings.
+$this-&gt;set( &#39;varnish&#39;, array(
+  &quot;host&quot; =&gt; &quot;localhost&quot;,
+  &quot;active&quot; =&gt; false
+));
+
+// CDN Service Settings.
+$this-&gt;set( &#39;cdn&#39;, array(
+  &quot;active&quot; =&gt; true,
+  &quot;provider&quot; =&gt; &quot;gcs&quot;,
+  &quot;subdomain&quot; =&gt; &quot;media&quot;,
+  &quot;key&quot; =&gt; &quot;alsdkjflaksdjf&quot;
+));
+
+// Save Settings.
+$this-&gt;_settings-&gt;commit();</code></pre>
 <h2 id="license">License</h2>
 <p>(The MIT License)</p>
 <p>Copyright (c) 2013 Usability Dynamics, Inc. &lt;info@usabilitydynamics.com&gt;</p>

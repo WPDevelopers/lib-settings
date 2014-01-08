@@ -5,7 +5,8 @@
 $settings  = new Settings(array(
   "store" => "options",
   "key" => "settings_test",
-  "format" => "object"
+  "format" => "object",
+  "auto_commit" => true
 ));
 
 $settings->set( 'make', 'Chevy' );
@@ -24,6 +25,39 @@ $settings->set( 'options', array(
   "towing" => true,
   "onstar" => 'active'
 ));
+```
+
+```php
+// Initialize Settings.
+$this->_settings = new Settings(array(
+  "store" => "options",
+  "key" => "ud:veneer",
+));
+
+// ElasticSearch Service Settings.
+$this->set( 'documents', array(
+  "host" => "localhost",
+  "active" => true,
+  "token" => "alsdkjflaksdjsadsdff",
+  "port" => 9200
+));
+
+// Varnish Service Settings.
+$this->set( 'varnish', array(
+  "host" => "localhost",
+  "active" => false
+));
+
+// CDN Service Settings.
+$this->set( 'cdn', array(
+  "active" => true,
+  "provider" => "gcs",
+  "subdomain" => "media",
+  "key" => "alsdkjflaksdjf"
+));
+
+// Save Settings.
+$this->_settings->commit();
 ```
 
 ## License

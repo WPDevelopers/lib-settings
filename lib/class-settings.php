@@ -23,7 +23,7 @@ namespace UsabilityDynamics {
        * @property $version
        * @type {Object}
        */
-      static public $version = '0.2.0';
+      static public $version = '0.2.1';
 
       /**
        * Prefix for option keys to unique
@@ -103,6 +103,15 @@ namespace UsabilityDynamics {
       private $_debug = false;
 
       /**
+       * Automatically Save.
+       *
+       * @static
+       * @property $_debug
+       * @type {Boolean}
+       */
+      private $auto_commit = false;
+
+      /**
        * Instance Valid.
        *
        * @static
@@ -129,15 +138,16 @@ namespace UsabilityDynamics {
        * @internal param string|\UsabilityDynamics\type $prefix
        * @internal param bool|\UsabilityDynamics\type $hash_keys
        */
-      public function __construct( $args = false) {
+      public function __construct( $args = false ) {
 
         $args = Utility::parse_args( $args, array(
-          "namespace" => "",
-          "key" => "",
-          "debug" => false,
-          "store" => false,
-          "schema" => false
-        ));
+          "namespace"   => "",
+          "key"         => "",
+          "auto_commit" => false,
+          "debug"       => false,
+          "store"       => false,
+          "schema"      => false
+        ) );
 
         // Load Schema.
         if( $args->schema ) {
@@ -168,9 +178,13 @@ namespace UsabilityDynamics {
           $this->_namespace = $args->namespace;
         }
 
-        $this->_load();
+        // Set Auto Commit.
+        if( $args->auto_commit ) {
+          $this->auto_commit = $args->auto_commit;
+        }
 
-        return $this;
+        // Load Initial.
+        $this->_load();
 
       }
 
@@ -213,6 +227,9 @@ namespace UsabilityDynamics {
        */
       public function set( $key = '', $value = false, $bypass_validation = false ) {
 
+        if( !$this->_data ) {
+          $this->_data = array();
+        }
         // First argument is an object/array.
         if( Utility::get_type( $key ) === 'object' || Utility::get_type( $key ) === 'array' ) {
           Utility::extend( $this->_data, (object) $key );
@@ -220,23 +237,47 @@ namespace UsabilityDynamics {
 
         // Standard key & value pair
         if( Utility::get_type( $key ) === 'string' && ( Utility::get_type( $value ) === 'string' || Utility::get_type( $value ) === 'number' || Utility::get_type( $value ) === 'boolean' ) ) {
-          $this->_data[ $key ] = $value;
-        }
 
-        // Standard key with complex value.
-        if( Utility::get_type( $key ) === 'string' && Utility::get_type( $value ) === 'object' ) {
-
-          if( Utility::get_type( $this->_data[ $key ] ) === 'object' ) {
-            $this->_data[ $key ] = Utility::extend( $this->_data[ $key ], $value );
+          if( strpos( $key, '.' ) ) {
+            self::set_val( $this->_data, $key, $value );
           } else {
-            $this->_data[ $key ] = value;
+            $this->_data[ $key ] = $value;
           }
 
         }
 
-        // Standard key with array value
-        if( Utility::get_type( $key ) === 'string' && Utility::get_type( $value ) === 'array' ) {
-          $this->_data[ $key ] = array_unique( array_merge( $this->_data[ $key ], $value ) );
+        // echo "<br />$key " . Utility::get_type( $value ) . ' - ';
+
+        // Standard key with complex value.
+        if( Utility::get_type( $key ) === 'string' ) {
+
+          if( Utility::get_type( $value ) === 'object' ) {
+
+            if( strpos( $key, '.' ) ) {
+              self::set_val( $this->_data, $key, $value );
+            } else {
+
+              if( Utility::get_type( $this->_data[ $key ] ) === 'object' ) {
+                $this->_data[ $key ] = Utility::extend( $this->_data[ $key ], $value );
+              } else {
+                $this->_data[ $key ] = $value;
+              }
+
+            }
+
+          }
+
+          // Standard key with array value
+          if( Utility::get_type( $value ) === 'array' ) {
+
+            if( strpos( $key, '.' ) ) {
+              self::set_val( $this->_data, $key, $value );
+            } else {
+              $this->_data[ $key ] = array_unique( array_merge( (array) $this->_data[ $key ], $value ) );
+            }
+
+          }
+
         }
 
         // Validate if we have a schema.
@@ -245,8 +286,8 @@ namespace UsabilityDynamics {
         }
 
         // Commit to Storage if validation passed.
-        if( $this->is_valid ) {
-          $this->_commit();
+        if( $this->is_valid && $this->auto_commit ) {
+          $this->commit();
         }
 
         return $this;
@@ -260,20 +301,21 @@ namespace UsabilityDynamics {
        *
        * @return bool
        */
-      public function file_transfer( $args = array() ) {
+      public
+      function file_transfer( $args = array() ) {
 
         $args = Utility::parse_args( $args, array(
-          "name" => "settings",
-          "format" => "json",
-          "cache" => 'public',
+          "name"     => "settings",
+          "format"   => "json",
+          "cache"    => 'public',
           "filename" => null,
-          "charset" => 'utf8'
-        ));
+          "charset"  => 'utf8'
+        ) );
 
-        $args->filename = $args->filename ? $args->filename : $args->name  . '-' . date( 'Y-m-d' ) . '.' . $args->format;
+        $args->filename = $args->filename ? $args->filename : $args->name . '-' . date( 'Y-m-d' ) . '.' . $args->format;
 
         // Ensure headers have not been sent.
-        if( headers_sent() ){
+        if( headers_sent() ) {
           return false;
         }
 
@@ -299,29 +341,30 @@ namespace UsabilityDynamics {
        *
        * @return array|bool|mixed|object
        */
-      private function set_schema( $schema = false ) {
+      private
+      function set_schema( $schema = false ) {
 
         //$_retriever = new \JsonSchema\Uri\UriRetriever;
 
         try {
 
           // Take schema as given.
-          if( gettype( $schema  ) === 'array' ) {
+          if( gettype( $schema ) === 'array' ) {
             $this->_schema = (object) $schema;
           }
 
           // Take schema as given.
-          if( gettype( $schema  ) === 'object' ) {
+          if( gettype( $schema ) === 'object' ) {
             $this->_schema = $schema;
           }
 
           // Load schema from a file.
-          if( gettype( $schema  ) === 'string' ) {
+          if( gettype( $schema ) === 'string' ) {
             $this->_schema = json_decode( file_get_contents( $schema ) );
           }
 
         } catch( Exception $error ) {
-          $this->console( 'Caught exception: ' .  $error->getMessage() );
+          $this->console( 'Caught exception: ' . $error->getMessage() );
         }
 
         return $this->_schema ? $this->_schema : false;
@@ -329,10 +372,32 @@ namespace UsabilityDynamics {
       }
 
       /**
+       * Commit Settings to Storage.
+       *
+       */
+      public
+      function commit() {
+
+        switch( $this->_store ) {
+
+          case 'options':
+            // Convert to JSON String.
+            $_value = json_encode( $this->_data, JSON_FORCE_OBJECT );
+            $_value = \update_option( $this->_key, $_value );
+            break;
+
+        }
+
+        return $this;
+
+      }
+
+      /**
        * Validate Settings against Schema
        *
        */
-      private function _validate() {
+      private
+      function _validate() {
         $validator = new \JsonSchema\Validator();
 
         // Process Validation.
@@ -347,7 +412,7 @@ namespace UsabilityDynamics {
           $this->_console( "JSON does not validate. Violations:" );
 
           foreach( $validator->getErrors() as $error ) {
-            $this->_console( sprintf("[%s] %s\n", $error['property'], $error['message']) );
+            $this->_console( sprintf( "[%s] %s\n", $error[ 'property' ], $error[ 'message' ] ) );
           }
 
         }
@@ -359,7 +424,8 @@ namespace UsabilityDynamics {
        *
        * @param $data
        */
-      private function _console( $data ) {
+      private
+      function _console( $data ) {
 
         if( $this->_debug ) {
           echo sprintf( "lib-settings debug: [%s].", $data );
@@ -368,31 +434,12 @@ namespace UsabilityDynamics {
       }
 
       /**
-       * Commit Settings to Storage.
-       *
-       */
-      private function _commit() {
-
-        switch( $this->_store ) {
-
-          case 'options':
-            // Convert to JSON String.
-            $_value = json_encode( $this->_data, JSON_FORCE_OBJECT );
-            $_value = \update_option( $this->_key, $_value );
-          break;
-
-        }
-
-        return $this;
-
-      }
-
-      /**
        * Load options from DB
        *
        * @return \UsabilityDynamics\Settings
        */
-      private function _load() {
+      private
+      function _load() {
 
         switch( $this->_store ) {
 
@@ -411,19 +458,17 @@ namespace UsabilityDynamics {
 
               $_value = json_decode( $_value, true );
 
-
             } catch( Exception $error ) {
-              $this->_console( 'Caught exception: ' .  $error->getMessage() );
+              $this->_console( 'Caught exception: ' . $error->getMessage() );
             }
 
             $this->_data = $_value;
 
-          break;
+            break;
 
           default:
 
-
-          break;
+            break;
 
         }
 
@@ -440,7 +485,8 @@ namespace UsabilityDynamics {
        *
        * @return array|mixed|string|void
        */
-      private function _output( $data, $format = false ) {
+      private
+      function _output( $data, $format = false ) {
 
         $format = $format ? $format : $this->_format;
 
@@ -458,20 +504,34 @@ namespace UsabilityDynamics {
 
       }
 
+      function set_val( array &$arr, $path, $val ) {
+        $loc = & $arr;
+
+        foreach( explode( '.', $path ) as $step ) {
+          $loc = & $loc[ $step ];
+        }
+
+        return $loc = $val;
+
+      }
+
       /**
        * Expand Array
        * @source http://stackoverflow.com/questions/17365059/how-to-unflatten-array-in-php-using-dot-notation
+       *
        * @param     $array
        * @param int $level
        *
        * @return array
        */
-      private function _expand( $array, $level = 0 ) {
+      private
+      function _expand( $array, $level = 0 ) {
         $result = array();
-        $next = $level + 1;
+        $next   = $level + 1;
 
         foreach( $array as $key => $value ) {
           $tree = explode( '.', $key );
+
           if( isset( $tree[ $level ] ) ) {
             if( !isset( $tree[ $next ] ) ) {
               $result[ $tree[ $level ] ][ 'id' ]    = $key;
@@ -481,9 +541,9 @@ namespace UsabilityDynamics {
               }
             } else {
               if( isset( $result[ $tree[ $level ] ][ 'children' ] ) ) {
-                $result[ $tree[ $level ] ][ 'children' ] = array_merge_recursive( $result[ $tree[ $level ] ][ 'children' ], _expand( array( $key => $value ), $next ) );
+                $result[ $tree[ $level ] ][ 'children' ] = array_merge_recursive( $result[ $tree[ $level ] ][ 'children' ], self::_expand( array( $key => $value ), $next ) );
               } else {
-                $result[ $tree[ $level ] ][ 'children' ] = _expand( array( $key => $value ), $next );
+                $result[ $tree[ $level ] ][ 'children' ] = self::_expand( array( $key => $value ), $next );
               }
             }
 
@@ -506,7 +566,8 @@ namespace UsabilityDynamics {
        * @internal param array $a
        * @return array|null
        */
-      private function _resolve( $a, $path, $default = null ) {
+      private
+      function _resolve( $a, $path, $default = null ) {
 
         $current = $a;
         $p       = strtok( $path, '.' );
