@@ -19,13 +19,6 @@
             "classes": {},
             "fors": {},
             "namespaces": {}
-        },
-        "scripts/settings.js": {
-            "name": "scripts/settings.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
         }
     },
     "modules": {},
@@ -51,12 +44,6 @@
                 "description": "",
                 "type": "Object"
             },
-            "class": ""
-        },
-        {
-            "file": "scripts/settings.js",
-            "line": 1,
-            "description": "requires.js\n*/define(\"lib.settings\",function(a,b,c){return console.log(c.id,\"loaded\"),function(){console.log(c.id,\"initialized\")}});",
             "class": ""
         }
     ],
@@ -84,10 +71,6 @@
         {
             "message": "Missing item type\nSettings",
             "line": " scripts/settings.dev.js:1"
-        },
-        {
-            "message": "Missing item type\nrequires.js\n*/define(\"lib.settings\",function(a,b,c){return console.log(c.id,\"loaded\"),function(){console.log(c.id,\"initialized\")}});",
-            "line": " scripts/settings.js:1"
         }
     ]
 }

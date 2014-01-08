@@ -1,13 +1,13 @@
 {
-  "name": "lib-requires",
-  "version": "0.1.0",
-  "description": "Require Library.",
+  "name": "lib-settings",
+  "version": "0.2.0",
+  "description": "Settings Library.",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/UsabilityDynamics/ilb-requires"
+    "url": "https://github.com/UsabilityDynamics/lib-settings"
   },
-  "main": "scripts/requires",
+  "main": "scripts/settings",
   "engines": {
     "node": ">= 0.10.0"
   },

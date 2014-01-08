@@ -23,7 +23,7 @@ namespace UsabilityDynamics {
        * @property $version
        * @type {Object}
        */
-      static public $version = '0.1.3';
+      static public $version = '0.2.0';
 
       /**
        * Prefix for option keys to unique
@@ -76,11 +76,13 @@ namespace UsabilityDynamics {
       /**
        * Settings Format.
        *
+       * Options are: 'json', 'object', 'array', 'hash-map'.
+       *
        * @static
        * @property $_format
        * @type {String}
        */
-      private $_format = 'object';
+      private $_format = null;
 
       /**
        * Storage Location
@@ -280,7 +282,7 @@ namespace UsabilityDynamics {
           }
 
         } catch( Exception $error ) {
-          echo 'Caught exception: ' .  $error->getMessage();
+          $this->console( 'Caught exception: ' .  $error->getMessage() );
         }
 
         return $this->_schema ? $this->_schema : false;
@@ -355,12 +357,29 @@ namespace UsabilityDynamics {
 
         switch( $this->_store ) {
 
+          // WordPress Site Options.
           case 'options':
-            $_value = \get_option( $this->_key );
-            $_value = json_decode( $_value, true );
-            $this->_data = $_value;
-          break;
 
+            // Load from options.
+            $_value = \get_option( $this->_key );
+
+            // If already an array it must have been serialized
+            if( gettype( $_value ) === 'array' ) {
+              return $this->_output( $this->_data = $_value );
+            }
+
+            try {
+
+              $_value = json_decode( $_value, true );
+
+
+            } catch( Exception $error ) {
+              $this->_console( 'Caught exception: ' .  $error->getMessage() );
+            }
+
+            $this->_data = $_value;
+
+          break;
 
           default:
 
