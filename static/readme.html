@@ -113,10 +113,28 @@
   </head>
   <body>  
     <h2 id="usage">Usage</h2>
-<pre><code class="lang-php">// Declare Settings Instance
-$this-&gt;settings = new \UsabilityDynamics\Settings(array(
-  &quot;options&quot; =&gt; {},
-  &quot;exportable&quot; =&gt; true
+<pre><code class="lang-php">// Instantiate and load Settings.
+$settings  = new Settings(array(
+  &quot;store&quot; =&gt; &quot;options&quot;,
+  &quot;key&quot; =&gt; &quot;settings_test&quot;,
+  &quot;format&quot; =&gt; &quot;object&quot;
+));
+
+$settings-&gt;set( &#39;make&#39;, &#39;Chevy&#39; );
+$settings-&gt;set( &#39;model&#39;, &#39;Tahoe&#39; );
+
+$settings-&gt;set( &#39;features&#39;, array(
+  &#39;ac&#39;,
+  &#39;stuff&#39;
+  &#39;dvd&#39;,
+  &#39;sunroof&#39;
+));
+
+$settings-&gt;set( &#39;options&#39;, array(
+  &quot;gps&quot; =&gt; &#39;standard&#39;,
+  &quot;rims&quot; =&gt; &#39;24&#39;,
+  &quot;towing&quot; =&gt; true,
+  &quot;onstar&quot; =&gt; &#39;active&#39;
 ));</code></pre>
 <h2 id="license">License</h2>
 <p>(The MIT License)</p>
