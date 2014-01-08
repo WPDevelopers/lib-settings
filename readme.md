@@ -1,10 +1,28 @@
 ## Usage
 
 ```php
-// Declare Settings Instance
-$this->settings = new \UsabilityDynamics\Settings(array(
-  "options" => {},
-  "exportable" => true
+// Instantiate and load Settings.
+$settings  = new Settings(array(
+  "store" => "options",
+  "key" => "settings_test",
+  "format" => "object"
+));
+
+$settings->set( 'make', 'Chevy' );
+$settings->set( 'model', 'Tahoe' );
+
+$settings->set( 'features', array(
+  'ac',
+  'stuff'
+  'dvd',
+  'sunroof'
+));
+
+$settings->set( 'options', array(
+  "gps" => 'standard',
+  "rims" => '24',
+  "towing" => true,
+  "onstar" => 'active'
 ));
 ```
 
