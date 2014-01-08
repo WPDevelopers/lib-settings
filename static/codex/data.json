@@ -1,0 +1,93 @@
+{
+    "project": {
+        "name": "usabilitydynamics/lib-settings",
+        "description": "",
+        "version": "",
+        "url": "http://github.com/usabilitydynamics/lib-settings"
+    },
+    "files": {
+        "scripts/src/settings.js": {
+            "name": "scripts/src/settings.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/settings.dev.js": {
+            "name": "scripts/settings.dev.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/settings.js": {
+            "name": "scripts/settings.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {},
+    "classitems": [
+        {
+            "file": "scripts/src/settings.js",
+            "line": 1,
+            "description": "Settings",
+            "version": "0.1.3",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": ""
+        },
+        {
+            "file": "scripts/settings.dev.js",
+            "line": 1,
+            "description": "Settings",
+            "version": "0.1.3",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": ""
+        },
+        {
+            "file": "scripts/settings.js",
+            "line": 1,
+            "description": "requires.js\n*/define(\"lib.settings\",function(a,b,c){return console.log(c.id,\"loaded\"),function(){console.log(c.id,\"initialized\")}});",
+            "class": ""
+        }
+    ],
+    "warnings": [
+        {
+            "message": "unknown tag: version",
+            "line": " scripts/src/settings.js:1"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " scripts/src/settings.js:1"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " scripts/settings.dev.js:1"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " scripts/settings.dev.js:1"
+        },
+        {
+            "message": "Missing item type\nSettings",
+            "line": " scripts/src/settings.js:1"
+        },
+        {
+            "message": "Missing item type\nSettings",
+            "line": " scripts/settings.dev.js:1"
+        },
+        {
+            "message": "Missing item type\nrequires.js\n*/define(\"lib.settings\",function(a,b,c){return console.log(c.id,\"loaded\"),function(){console.log(c.id,\"initialized\")}});",
+            "line": " scripts/settings.js:1"
+        }
+    ]
+}

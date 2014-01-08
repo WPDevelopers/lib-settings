@@ -1,14 +1,1 @@
-/**
- * UD Settings
- *
- * @version 0.1.3
- * @returns {Object}
- */
-function Settings() {
-  console.log( 'ud.settings' );
-
-};
-
-Settings.type = 'library';
-
-module.exports = Settings;
+define("lib.settings",function(a,b,c){return console.log(c.id,"loaded"),function(){console.log(c.id,"initialized")}});

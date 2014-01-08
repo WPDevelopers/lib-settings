@@ -56,10 +56,10 @@ namespace UsabilityDynamics {
       /**
        * Constructor
        *
-       * @param type $defaults
-       * @param type $prefix
-       * @param type $hash_keys
-       * @param type $force_save
+       * @param type                           $defaults
+       * @param bool|\UsabilityDynamics\type   $force_save
+       * @param string|\UsabilityDynamics\type $prefix
+       * @param bool|\UsabilityDynamics\type   $hash_keys
        */
       public function __construct( $defaults, $force_save = false, $prefix = '', $hash_keys = false ) {
 
@@ -117,9 +117,10 @@ namespace UsabilityDynamics {
       /**
        * Setter for options
        *
-       * @param type $key
-       * @param type $value
-       * @param type $force_save
+       * @param type                         $key
+       * @param type                         $value
+       * @param bool|\UsabilityDynamics\type $force_save
+       *
        * @return \UsabilityDynamics\Settings
        */
       public function set( $key, $value, $force_save = false ) {
