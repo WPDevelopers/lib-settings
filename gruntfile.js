@@ -69,24 +69,19 @@ module.exports = function build( grunt ) {
 
     // Uglify Scripts.
     uglify: {
-      development: {
-        options: {
-          preserveComments: true,
-          beautify: true,
-          wrap: false
-        },
-        files: {
-          'scripts/settings.dev.js': [ 'scripts/src/settings.js' ]
-        }
-      },
       production: {
         options: {
           preserveComments: false,
           wrap: false
         },
-        files: {
-          'scripts/settings.js': [ 'scripts/src/settings.js' ]
-        }
+        files: [
+          {
+            expand: true,
+            cwd: 'scripts/src',
+            src: [ '*.js' ],
+            dest: 'scripts'
+          }
+        ]
       }
     },
 
