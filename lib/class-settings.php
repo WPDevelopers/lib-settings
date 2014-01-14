@@ -345,8 +345,6 @@ namespace UsabilityDynamics {
        */
       public function set_schema( $schema = false ) {
 
-        //$_retriever = new \JsonSchema\Uri\UriRetriever;
-
         try {
 
           // Take schema as given.
@@ -360,7 +358,7 @@ namespace UsabilityDynamics {
           }
 
           // Load schema from a file.
-          if( gettype( $schema ) === 'string' ) {
+          if( gettype( $schema ) === 'string' && is_file( $schema ) ) {
             $this->_schema = json_decode( file_get_contents( $schema ) );
           }
 
