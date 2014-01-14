@@ -230,9 +230,13 @@ namespace UsabilityDynamics {
         if( !$this->_data ) {
           $this->_data = array();
         }
+
         // First argument is an object/array.
-        if( Utility::get_type( $key ) === 'object' || Utility::get_type( $key ) === 'array' ) {
-          Utility::extend( $this->_data, (object) $key );
+        if( Utility::get_type( $key ) === 'object' || Utility::get_type( $key ) === 'array' || Utility::get_type( $key ) === 'stdClass' ) {
+
+          // Conver to array so merge can be done
+          $this->_data = Utility::extend( (array) $this->_data, (array) $key );
+
         }
 
         // Standard key & value pair
@@ -246,12 +250,11 @@ namespace UsabilityDynamics {
 
         }
 
-        // echo "<br />$key " . Utility::get_type( $value ) . ' - ';
-
         // Standard key with complex value.
         if( Utility::get_type( $key ) === 'string' ) {
 
-          if( Utility::get_type( $value ) === 'object' ) {
+
+          if( Utility::get_type( $value ) === 'object' || Utility::get_type( $value ) === 'stdClass' ) {
 
             if( strpos( $key, '.' ) ) {
               self::set_val( $this->_data, $key, $value );
@@ -301,8 +304,7 @@ namespace UsabilityDynamics {
        *
        * @return bool
        */
-      public
-      function file_transfer( $args = array() ) {
+      public function file_transfer( $args = array() ) {
 
         $args = Utility::parse_args( $args, array(
           "name"     => "settings",
@@ -341,8 +343,7 @@ namespace UsabilityDynamics {
        *
        * @return array|bool|mixed|object
        */
-      private
-      function set_schema( $schema = false ) {
+      public function set_schema( $schema = false ) {
 
         //$_retriever = new \JsonSchema\Uri\UriRetriever;
 
@@ -375,8 +376,7 @@ namespace UsabilityDynamics {
        * Commit Settings to Storage.
        *
        */
-      public
-      function commit() {
+      public function commit() {
 
         switch( $this->_store ) {
 
@@ -396,8 +396,7 @@ namespace UsabilityDynamics {
        * Validate Settings against Schema
        *
        */
-      private
-      function _validate() {
+      public function _validate() {
         $validator = new \JsonSchema\Validator();
 
         // Process Validation.
@@ -424,8 +423,7 @@ namespace UsabilityDynamics {
        *
        * @param $data
        */
-      private
-      function _console( $data ) {
+      public function _console( $data ) {
 
         if( $this->_debug ) {
           echo sprintf( "lib-settings debug: [%s].", $data );
@@ -438,8 +436,7 @@ namespace UsabilityDynamics {
        *
        * @return \UsabilityDynamics\Settings
        */
-      private
-      function _load() {
+      public function _load() {
 
         switch( $this->_store ) {
 
@@ -485,8 +482,7 @@ namespace UsabilityDynamics {
        *
        * @return array|mixed|string|void
        */
-      private
-      function _output( $data, $format = false ) {
+      public function _output( $data, $format = false ) {
 
         $format = $format ? $format : $this->_format;
 
@@ -504,7 +500,7 @@ namespace UsabilityDynamics {
 
       }
 
-      function set_val( array &$arr, $path, $val ) {
+      public function set_val( array &$arr, $path, $val ) {
         $loc = & $arr;
 
         foreach( explode( '.', $path ) as $step ) {
@@ -524,8 +520,7 @@ namespace UsabilityDynamics {
        *
        * @return array
        */
-      private
-      function _expand( $array, $level = 0 ) {
+      public function _expand( $array, $level = 0 ) {
         $result = array();
         $next   = $level + 1;
 
@@ -566,8 +561,7 @@ namespace UsabilityDynamics {
        * @internal param array $a
        * @return array|null
        */
-      private
-      function _resolve( $a, $path, $default = null ) {
+      public function _resolve( $a, $path, $default = null ) {
 
         $current = $a;
         $p       = strtok( $path, '.' );
