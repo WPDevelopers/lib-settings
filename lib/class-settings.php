@@ -146,7 +146,8 @@ namespace UsabilityDynamics {
           "auto_commit" => false,
           "debug"       => false,
           "store"       => false,
-          "schema"      => false
+          "schema"      => false,
+          "format"      => false
         ) );
 
         // Load Schema.
@@ -260,7 +261,7 @@ namespace UsabilityDynamics {
               self::set_val( $this->_data, $key, $value );
             } else {
 
-              if( Utility::get_type( $this->_data[ $key ] ) === 'object' ) {
+              if( isset( $this->_data[ $key ] ) && Utility::get_type( $this->_data[ $key ] ) === 'object' ) {
                 $this->_data[ $key ] = Utility::extend( $this->_data[ $key ], $value );
               } else {
                 $this->_data[ $key ] = $value;
