@@ -6,7 +6,8 @@ $settings  = new Settings(array(
   "store" => "options",
   "key" => "settings_test",
   "format" => "object",
-  "auto_commit" => true
+  "auto_commit" => true,
+  "data" => array( 'initial data', 'blah' )
 ));
 
 $settings->set( 'make', 'Chevy' );

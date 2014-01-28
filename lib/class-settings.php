@@ -141,14 +141,15 @@ namespace UsabilityDynamics {
       public function __construct( $args = false ) {
 
         $args = Utility::parse_args( $args, array(
-          "namespace"   => "",
-          "key"         => "",
-          "auto_commit" => false,
-          "debug"       => false,
-          "store"       => false,
-          "schema"      => false,
-          "format"      => false
-        ) );
+          'namespace'   => '',
+          'key'         => '',
+          'auto_commit' => false,
+          'debug'       => false,
+          'store'       => false,
+          'schema'      => false,
+          'format'      => false,
+          'data'        => null
+        ));
 
         // Load Schema.
         if( $args->schema ) {
@@ -187,6 +188,11 @@ namespace UsabilityDynamics {
         // Load Initial.
         $this->_load();
 
+        // Set Initial Data.
+        if( $args->data ) {
+          $this->set( $args->data );
+        }
+
       }
 
       /**
@@ -211,7 +217,7 @@ namespace UsabilityDynamics {
         }
 
         // Return value or default.
-        return $this->_data[ $key ] ? $this->_data[ $key ] : $default;
+        return isset( $this->_data[ $key ] ) ? $this->_data[ $key ] : $default;
 
       }
 
@@ -277,7 +283,7 @@ namespace UsabilityDynamics {
             if( strpos( $key, '.' ) ) {
               self::set_val( $this->_data, $key, $value );
             } else {
-              $this->_data[ $key ] = array_unique( array_merge( (array) $this->_data[ $key ], $value ) );
+              $this->_data[ $key ] = array_unique( array_merge( isset( $this->_data[ $key ] ) ? (array) $this->_data[ $key ] : array(), $value ) );
             }
 
           }
