@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Storage Example</title>
+  <link rel="stylesheet" type="text/css" href="styles/bootstrap.css"/>
+  <script data-main="scripts/app" src="//cdn.udx.io/udx.requires.js"></script>
+</head>
+<body class="container">
+
+  <section class="row">
+    <article class="col-md-1">
+      Use <code>storage.set( 'make', 'Chevy' )</code>
+    </article>
+  </section>
+
+  <section id="tablet" class="row tablet-only">
+    <article class="col-md-1"><p>Tablet.</p></article>
+  </section>
+
+  <section id="desktop" class="row desktop-only">
+    <article class="col-md-1"><p>Desktop</p></article>
+  </section>
+
+  <section id="mobile" class="row mobile-only">
+    <article class="col-md-1"><p>Mobile</p></article>
+  </section>
+
+  <script type="application/javascript">
+
+    // Load Twitter Bootstarp.
+    require.loadStyle( '//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css' );
+
+    var storage;
+
+    require( [ 'udx.test', 'udx.storage' ], function( test, Storage ) {
+
+      console.log( 'test.ok', test.ok );
+      console.log( 'test.version', test.version );
+      console.log( 'Storage.version', Storage.version );
+
+      storage = Storage.create();
+
+      console.log( 'test:make', storage.getItem( 'make' ) );
+
+    });
+
+  </script>
+</body>
+</html>
