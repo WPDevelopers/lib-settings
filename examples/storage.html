@@ -3,34 +3,48 @@
 <head>
   <title>Storage Example</title>
   <link rel="stylesheet" type="text/css" href="styles/bootstrap.css"/>
-  <script data-main="scripts/app" src="//cdn.udx.io/udx.requires.js"></script>
 </head>
 <body class="container">
 
   <section class="row">
-    <article class="col-md-1">
-      Use <code>storage.set( 'make', 'Chevy' )</code>
+    <article class="col-md-6">
+      <p>Set some storage settings:</p>
+      <p><code>storageInstance.setItem( 'name', 'Andy' );</code></p>
+      <p><code>storageInstance.setItem( 'vehicle', 'Chevy Tahoe' );</code></p>
+    </article>
+    <article class="col-md-6">
+      <p>Get stored data:</p>
+      <p><code>storageInstance.getItem( 'name' );</code></p>
+      <p><code>storageInstance.getItem( 'vehicle' );</code></p>
     </article>
   </section>
 
   <section id="tablet" class="row tablet-only">
-    <article class="col-md-1"><p>Tablet.</p></article>
+    <article class="col-md-6"><p>Tablet.</p></article>
   </section>
 
   <section id="desktop" class="row desktop-only">
-    <article class="col-md-1"><p>Desktop</p></article>
+    <article class="col-md-6"><p>Desktop</p></article>
   </section>
 
   <section id="mobile" class="row mobile-only">
-    <article class="col-md-1"><p>Mobile</p></article>
+    <article class="col-md-6"><p>Mobile</p></article>
   </section>
 
+  <script data-main="scripts/app" src="//cdn.udx.io/udx.requires.js"></script>
+
   <script type="application/javascript">
+
+    var storageInstance;
 
     // Load Twitter Bootstarp.
     require.loadStyle( '//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css' );
 
-    var storage;
+    require({
+      paths: {
+        'udx.storage': '../../scripts/src/udx.storage'
+      }
+    });
 
     require( [ 'udx.test', 'udx.storage' ], function( test, Storage ) {
 
@@ -38,9 +52,19 @@
       console.log( 'test.version', test.version );
       console.log( 'Storage.version', Storage.version );
 
-      storage = Storage.create();
+      storageInstance = Storage.create( 'user' );
 
-      console.log( 'test:make', storage.getItem( 'make' ) );
+      if( storageInstance.getItem( 'name' ) ) {
+        console.debug( 'Have user data...' );
+        console.log( 'Welcome', storageInstance.getItem( 'name' ), 'we have you located at', storageInstance.getItem( 'latitude' ), ', ', storageInstance.getItem( 'longitude' ) );
+      }
+
+      if( !storageInstance.getItem( 'name' ) ) {
+        console.debug( 'Storing user data...' );
+        storageInstance.setItem( 'name', 'Andy' );
+        storageInstance.setItem( 'latitude', '34.4239' );
+        storageInstance.setItem( 'longitude', '-77.5584' );
+      }
 
     });
 

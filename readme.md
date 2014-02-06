@@ -1,4 +1,24 @@
-## Usage
+## Storage Usage
+Storage module is developed for client-side persistant storing of key & value pairs.
+
+```javascript
+
+ // Initialize Storage.
+ var Storage = require( 'udx.storage' ).create();
+
+  // Set some values.
+ Storage.setItem( 'name', 'Andy' );
+ Storage.setItem( 'latitude', '34.4239' );
+ Storage.setItem( 'longitude', '-77.5584' );
+
+ // Later...
+ console.log( 'Welcome', Storage.getItem( 'name' ), 'we have you located at', Storage.getItem( 'latitude' ), ', ', Storage.getItem( 'longitude' ) );
+
+```
+
+Storage attempts to save data into localStorage, if the browser supports it. Otherwise we fallback to Cookie storage.
+
+## Settings Usage
 
 ```php
 // Instantiate and load Settings.

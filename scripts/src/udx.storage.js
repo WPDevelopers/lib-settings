@@ -7,22 +7,14 @@
  * @returns {Object}
  */
 define( 'udx.storage', [ 'udx.utility' ], function settings() {
-  console.log( 'udx.storage', 'loaded' );
+  console.debug( 'udx.storage', 'loaded' );
 
   function Settings( name, options ) {
-    console.log( 'udx.storage', 'created' );
+    console.debug( 'udx.storage', 'created' );
 
     // Return native.
     if( 'object' === typeof window.localStorage && 'function' === typeof window.localStorage.getItem ) {
-      console.log( 'udx.storage', 'using native' );
-
-      if( !window.localStorage.set ) {
-        window.localStorage.set = window.localStorage.setItem;
-      }
-
-      if( !window.localStorage.get ) {
-        window.localStorage.get = window.localStorage.gettItem;
-      }
+      console.debug( 'udx.storage', 'Browser supports native localStorage.' );
 
       return window.localStorage;
 
