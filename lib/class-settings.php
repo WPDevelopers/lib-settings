@@ -398,6 +398,30 @@ namespace UsabilityDynamics {
       }
 
       /**
+       * Remove Stored Settings
+       *
+       * @example
+       *
+       *      $settings->flush();
+       *
+       * @return $this
+       */
+      public function flush() {
+
+        switch( $this->_store ) {
+
+          case 'options':
+            if( function_exists( 'delete_option' ) ) {
+              delete_option( $this->_key );
+            }
+          break;
+
+        }
+
+        return $this;
+
+      }
+      /**
        * Validate Settings against Schema
        *
        */
@@ -505,6 +529,13 @@ namespace UsabilityDynamics {
 
       }
 
+      /**
+       * @param array $arr
+       * @param       $path
+       * @param       $val
+       *
+       * @return mixed
+       */
       public function set_val( array &$arr, $path, $val ) {
         $loc = & $arr;
 
