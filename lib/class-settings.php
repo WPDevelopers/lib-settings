@@ -23,7 +23,7 @@ namespace UsabilityDynamics {
        * @property $version
        * @type {Object}
        */
-      static public $version = '0.2.1';
+      static public $version = '0.2.2';
 
       /**
        * Prefix for option keys to unique
@@ -92,6 +92,15 @@ namespace UsabilityDynamics {
        * @type {String}
        */
       private $_store = false;
+
+      /**
+       * For transient storage.
+       *
+       * @static
+       * @property $_expiration
+       * @type {String}
+       */
+      private $_expiration = 60;
 
       /**
        * Toggle Debugger.
@@ -164,6 +173,10 @@ namespace UsabilityDynamics {
         // Set Storage Key.
         if( $args->key ) {
           $this->_key = $args->key;
+        }
+        // Set transient vxpiration value.
+        if( $args->expiration ) {
+          $this->_expiration = $args->expiration;
         }
 
         // Set Format to enforce.
@@ -380,16 +393,64 @@ namespace UsabilityDynamics {
       /**
        * Commit Settings to Storage.
        *
+       * * site_options - For WordPress, falls back to option if not in multisite.
+       * * options      - For WordPress, stores in blog options.
+       *
+       * @author potanin@UD
+       * @method commit
        */
       public function commit() {
 
+        $_data = $this->_data;
+
+        // Exclude protected keys.
+        foreach( (array) $_data as $key => $value ) {
+
+          if( substr( $key, 0, 2 ) === '__' ) {
+            unset( $_data[ $key ] );
+          }
+
+        }
+
         switch( $this->_store ) {
 
+          case 'transient':
+            $_value = json_encode( $_data, JSON_FORCE_OBJECT );
+
+            if( function_exists( 'set_transient' ) ) {
+              $_value = set_transient( $this->_key, $_value, $this->_expiration );
+            }
+
+          break;
+
+          case 'site_transient':
+
+            $_value = json_encode( $_data, JSON_FORCE_OBJECT );
+
+            if( function_exists( 'set_site_transient' ) ) {
+              $_value = set_site_transient( $this->_key, $_value, $this->_expiration );
+            }
+
+          break;
+
+          case 'site_meta':
+
+            $_value = json_encode( $_data, JSON_FORCE_OBJECT );
+
+            if( function_exists( 'update_site_option' ) ) {
+              $_value = update_site_option( $this->_key, $_value );
+            }
+
+          break;
+
           case 'options':
-            // Convert to JSON String.
-            $_value = json_encode( $this->_data, JSON_FORCE_OBJECT );
-            $_value = \update_option( $this->_key, $_value );
-            break;
+            $_value = json_encode( $_data, JSON_FORCE_OBJECT );
+
+            if( function_exists( 'update_option' ) ) {
+              $_value = update_option( $this->_key, $_value );
+            }
+
+          break;
 
         }
 

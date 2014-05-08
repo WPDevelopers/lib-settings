@@ -40,13 +40,13 @@
   "extra": {
     "component": {
       "scripts": [
-        "scripts/settings.js"
+        "static/scripts/settings.js"
       ],
       "templates": [
-        "views/new-installation.xhtml"
+        "static/views/new-installation.xhtml"
       ],
       "files": [
-        "schemas/settings.json"
+        "static/schemas/settings.json"
       ]
     }
   },
