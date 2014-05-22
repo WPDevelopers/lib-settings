@@ -161,21 +161,22 @@ namespace UsabilityDynamics {
         ));
 
         // Load Schema.
-        if( $args->schema ) {
+        if( isset( $args->schema ) && $args->schema ) {
           $this->set_schema( $args->schema );
         }
 
         // Set Storage Location(s).
-        if( $args->store ) {
+        if( isset( $args->store ) && $args->store ) {
           $this->_store = $args->store;
         }
 
         // Set Storage Key.
-        if( $args->key ) {
+        if( isset( $args->key ) && $args->key ) {
           $this->_key = $args->key;
         }
+
         // Set transient vxpiration value.
-        if( $args->expiration ) {
+        if( isset( $args->expiration ) && $args->expiration ) {
           $this->_expiration = $args->expiration;
         }
 
