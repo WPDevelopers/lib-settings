@@ -488,6 +488,11 @@ namespace UsabilityDynamics {
        *
        */
       public function _validate() {
+
+        if( !class_exists( 'JsonSchema\Validator' ) ) {
+          return;
+        }
+
         $validator = new \JsonSchema\Validator();
 
         // Process Validation.
