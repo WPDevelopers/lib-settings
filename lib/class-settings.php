@@ -175,7 +175,7 @@ namespace UsabilityDynamics {
           $this->_key = $args->key;
         }
         // Set transient vxpiration value.
-        if( $args->expiration ) {
+        if( isset( $args->expiration ) ) {
           $this->_expiration = $args->expiration;
         }
 
