@@ -261,7 +261,7 @@ namespace UsabilityDynamics {
         }
 
         // Standard key & value pair
-        if( Utility::get_type( $key ) === 'string' && ( Utility::get_type( $value ) === 'string' || Utility::get_type( $value ) === 'number' || Utility::get_type( $value ) === 'boolean' ) ) {
+        if( Utility::get_type( $key ) === 'string' && ( Utility::get_type( $value ) === 'string' || Utility::get_type( $value ) ==='integer' || Utility::get_type($value) === 'float' || Utility::get_type( $value ) === 'boolean' ) ) {
 
           if( strpos( $key, '.' ) ) {
             self::set_val( $this->_data, $key, $value );
@@ -297,7 +297,7 @@ namespace UsabilityDynamics {
             if( strpos( $key, '.' ) ) {
               self::set_val( $this->_data, $key, $value );
             } else {
-              $this->_data[ $key ] = array_unique( array_merge( isset( $this->_data[ $key ] ) ? (array) $this->_data[ $key ] : array(), $value ) );
+              $this->_data[ $key ] = array_unique( array_merge( isset( $this->_data[ $key ] ) ? (array) $this->_data[ $key ] : array(), $value ), SORT_REGULAR );
             }
 
           }
@@ -383,8 +383,8 @@ namespace UsabilityDynamics {
             $this->_schema = json_decode( file_get_contents( $schema ) );
           }
 
-        } catch( Exception $error ) {
-          $this->console( 'Caught exception: ' . $error->getMessage() );
+        } catch( \Exception $error ) {
+          $this->_console( 'Caught exception: ' . $error->getMessage() );
         }
 
         return $this->_schema ? $this->_schema : false;
@@ -559,7 +559,7 @@ namespace UsabilityDynamics {
 
               $_value = json_decode( $_value, true );
 
-            } catch( Exception $error ) {
+            } catch( \Exception $error ) {
               $this->_console( 'Caught exception: ' . $error->getMessage() );
             }
 
