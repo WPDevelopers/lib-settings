@@ -436,19 +436,17 @@ namespace UsabilityDynamics {
 
           case 'site_options':
 
-            $_value = json_encode( $_data, JSON_FORCE_OBJECT );
 
             if( function_exists( 'update_site_option' ) ) {
-              $_value = update_site_option( $this->_key, $_value );
+              $_value = update_site_option( $this->_key, $_data );
             }
 
           break;
 
           case 'options':
-            $_value = json_encode( $_data, JSON_FORCE_OBJECT );
 
             if( function_exists( 'update_option' ) ) {
-              $_value = update_option( $this->_key, $_value );
+              $_value = update_option( $this->_key, $_data );
             }
 
           break;
@@ -468,20 +466,32 @@ namespace UsabilityDynamics {
        *
        * @return $this
        */
-      public function flush() {
+      public function flush($db = true, $key = null) {
 
-        switch( $this->_store ) {
-          case 'options':
-            if( function_exists( 'delete_option' ) ) {
-              delete_option( $this->_key );
-            }
-          case 'site_options':
-            if( function_exists( 'delete_site_option' ) ) {
-              delete_option( $this->_key );
-            }
-          break;
+        if($db == true){
+          switch( $this->_store ) {
+            case 'options':
+              if( function_exists( 'delete_option' ) ) {
+                delete_option( $this->_key );
+              }
+            case 'site_options':
+              if( function_exists( 'delete_site_option' ) ) {
+                delete_option( $this->_key );
+              }
+            break;
 
+          }
         }
+
+        if($key){
+          if(isset($this->_data[$key])){
+            unset($this->_data[$key]);
+          }
+        }
+        else{
+          $this->_data = [];
+        }
+
 
         return $this;
 
