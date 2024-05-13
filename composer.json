@@ -3,7 +3,7 @@
   "keywords": [ "settings" ],
   "type": "library",
   "require": {
-    "udx/lib-utility": "~0.3"
+    "wpdeveloper/lib-utility": "dev-master"
   },
   "require-dev": {
     "justinrainbow/json-schema": "1.1.*"
