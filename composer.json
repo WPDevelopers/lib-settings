@@ -1,5 +1,5 @@
 {
-  "name": "udx/lib-settings",
+  "name": "wpdeveloper/lib-settings",
   "keywords": [ "settings" ],
   "type": "library",
   "require": {
@@ -11,8 +11,8 @@
   "minimum-stability": "dev",
   "repositories": [
     {
-      "type": "composer",
-      "url": "https://repository.usabilitydynamics.com"
+      "type": "vcs",
+      "url": "https://github.com/WPDevelopers/lib-utility"
     }
   ],
   "autoload": {
